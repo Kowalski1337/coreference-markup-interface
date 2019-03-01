@@ -1,22 +1,11 @@
 package userInterface;
 
-import chain.Action;
-import chain.Blank;
-import chain.Chain;
-import chain.ChainImpl;
-import chain.Location;
-import chain.Phrase;
+import chain.*;
 import javafx.util.Pair;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ControllerImpl implements Controller {
@@ -34,6 +23,17 @@ public class ControllerImpl implements Controller {
     private int selectedBlank = -1;
     private String newChainName;
     private List<Action> actions;  // TODO: send this to the server and then empty it after each send
+    private int decision;
+    private String judgeText = "Приехав с утренним поездом в Москву, Левин остановился у своего " +
+            "старшего брата по матери Кознышева и, переодевшись, вошел к нему в кабинет, намереваясь тотчас же " +
+            "рассказать ему, для чего он приехал, и просить его совета: но брат был не один. У него сидел известный " +
+            "профессор философии, приехавший из Харькова, собственно, затем, чтобы разъяснить недоразумение, " +
+            "возникшее между ними по весьма важному философскому вопросу. Профессор вел жаркую полемику против " +
+            "материалистов, а Сергей Кознышев с интересом следил за этою полемикой и, прочтя последнюю статью " +
+            "профессора, написал ему в письме свои возражения; он упрекал профессора за слишком большие уступки " +
+            "материалистам. И профессор тотчас же приехал, чтобы столковаться. Речь шла о модном вопросе: есть ли " +
+            "граница между психическими и физиологическими явлениями в деятельности человека и где она?";
+    private Set<Integer> firstHighlighs, secondHighlights;
 
     ControllerImpl(String text) {
         chains = new ArrayList<>();
@@ -152,8 +152,7 @@ public class ControllerImpl implements Controller {
     }
 
     /**
-     *
-     * @param btn - the text on the pressed button
+     * @param btn      - the text on the pressed button
      * @param position - the position of this button in the text
      * @return if the press was recorded or not
      */
@@ -162,8 +161,7 @@ public class ControllerImpl implements Controller {
             if (!selected.containsKey(position)) selected.put(position, btn);
             else selected.remove(position);
             return true;
-        }
-        else if (selected.isEmpty() && (selectedBlank == -1 || selectedBlank == position)) {
+        } else if (selected.isEmpty() && (selectedBlank == -1 || selectedBlank == position)) {
             if (selectedBlank == -1) selectedBlank = position;
             else selectedBlank = -1;
             return true;
@@ -235,6 +233,11 @@ public class ControllerImpl implements Controller {
 
     }
 
+    @Override
+    public void sendDecision() {
+
+    }
+
 
     private Color generateRandomColor() {
         Random R = new Random();
@@ -252,4 +255,37 @@ public class ControllerImpl implements Controller {
         prevStates.add(new Pair<>(a, prevIndex));
     }
 
+    public void setDecision(int decision) {
+        this.decision = decision;
+    }
+
+    public int getDecision() {
+        return decision;
+    }
+
+    public void setJudgeText(String judgeText) {
+        this.judgeText = judgeText;
+    }
+
+    public String getJudgeText() {
+        return judgeText;
+    }
+
+    public void setFirstHighlighs(Set<Integer> firstHighlighs) {
+        this.firstHighlighs = firstHighlighs;
+    }
+
+    public void setSecondHighlights(Set<Integer> secondHighlights) {
+        this.secondHighlights = secondHighlights;
+    }
+
+    public Set<Integer> getFirstHighlighs() {
+        return firstHighlighs;
+    }
+
+    public Set<Integer> getSecondHighlights() {
+        return secondHighlights;
+    }
+
+    //TODO getInfo from Server
 }

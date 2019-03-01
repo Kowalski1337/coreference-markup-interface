@@ -19,4 +19,6 @@ public interface Controller {
     void resolveConflict(int decision);
     void disableOption(int option);
     void enableOption(int option);
+
+    void sendDecision();
 }
